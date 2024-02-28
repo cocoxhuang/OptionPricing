@@ -4,12 +4,13 @@
 using namespace std;
 
 int main(){
+    binModel model;
     int T;
     double K;
-    double S0,u,d,r;
-    getParams(S0,u,d,r);
+
+    model.getParams();
     getOptionParams(T,K);
-    cout << "Call price:    " << callPrice(S0, u, d, T, r, K) << endl;
-    cout << "Put price:     " << putPrice(S0, u, d, T, r, K) << endl;
+    cout << "Call price:    " << priceBinomial(model, T, K, callPayoff) << endl;
+    cout << "Put price:     " << priceBinomial(model, T, K, putPayoff)  << endl;
     return 0;
 }

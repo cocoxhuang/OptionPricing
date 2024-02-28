@@ -1,13 +1,15 @@
+#include "binModel.h"
 #include <iostream>
 #include <cmath>
+using namespace std;
 
 // compute risk-neutral probability
-double riskNeutralProb(const double& u,const double& d,const double& r){
+double binModel::riskNeutralProb(){
     return (r-d)/(u-d);
 }
 
 // compute the stock price at time T with i times up
-double get_St(const double& S0,const  double& u,const  double& d,const  int& T,const  int& i){
+double binModel::get_St(const int& T,const  int& i){
     /*
     input: ..
     i: number of ups i in the length T binomial lattice
@@ -17,9 +19,13 @@ double get_St(const double& S0,const  double& u,const  double& d,const  int& T,c
 }
 
 // get parameters input
-void getParams(double& S0, double& u, double& d, double& r){
-    std::cout << "Enter S0: "; std::cin >> S0;
-    std::cout << "Enter u:  "; std::cin >> u;
-    std::cout << "Enter d:  "; std::cin >> d;
-    std::cout << "Enter r:  "; std::cin >> r;
+void binModel::getParams(){
+    cout << "Enter S0: "; cin >> S0;
+    cout << "Enter u:  "; cin >> u;
+    cout << "Enter d:  "; cin >> d;
+    cout << "Enter r:  "; cin >> r;
+}
+
+double binModel::getR(){
+    return r;
 }
