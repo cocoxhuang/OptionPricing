@@ -2,40 +2,53 @@
 #include <cmath>
 #include <random>
 #include <iostream>
+#include <string>
 
 std::default_random_engine generator;
-std::normal_distribution<double> distribution(0.0,1.0); // ways to sample normal distribution, see more details in 
-                                                        // https://stackoverflow.com/questions/2325472/generate-random-numbers-following-a-normal-distribution-in-c-c
+std::uniform_real_distribution<double> uniformDist(1.0, 2.0);
 
-double callOption_price(const int& n_sims, const double& S, const double& K, const double& r, const double& sigma, const double& T){
-    double ES_T = S * exp(T*(r - 0.5*sigma*sigma));     // expected stock price at time T
-    double S_T = 0;                                     // stock price at time T
+double generateStockPrice(const double& S_0, const int& T, const double& p, const double& u){
+    double S_T = S_0;
+    for (int i = 0; i < T; i++){
+        if (uniformDist(generator) > p){
+            S_T = S_0 * u;
+            printf("");
+        } else {
+            S_T = S_0 / u;
+        }
+    }
+}
+
+double callOption_price(const int& n_sims, const double& S, const double& K, const double& r, const double& p, const double& u, const int& T, const std::string& type){
+    double S_T = S;                                     // stock price at time T
     double payoff = 0;                                  // payoff of the option
     double total_payoff = 0;                            // total sum of payoffs of all simulations
 
-    for (int i = 0; i < n_sims; i++){
-        S_T = ES_T * exp(sigma * pow(T,0.5) * distribution(generator));
-        payoff = std::max(S_T-K,0.0);
-        total_payoff = total_payoff + payoff;
+    for (int i = 0; i < T; i++){
+        if (uniformDist(generator) > p){
+            S_T = S_T * u;
+            if 
+        } else {
+            S_T = S_T / u;
+        }
     }
 
     return total_payoff/static_cast<double>(n_sims) * exp(-r * T);
 }
 
-double putOption_price(const int& n_sims, const double& S, const double& K, const double& r, const double& sigma, const double& T){
-    double ES_T = S * exp(T*(r - 0.5*sigma*sigma));     // expected stock price at time T
-    double S_T = 0;                                     // stock price at time T
-    double payoff = 0;                                  // payoff of the option
-    double total_payoff = 0;                            // total sum of payoffs of all simulations
+// double putOption_price(const int& n_sims, const double& S, const double& K, const double& r, const double& p, const double& u, const int& T){
+//     double S_T = 0;                                     // stock price at time T
+//     double payoff = 0;                                  // payoff of the option
+//     double total_payoff = 0;                            // total sum of payoffs of all simulations
 
-    for (int i = 0; i < n_sims; i++){
-        S_T = ES_T * exp(sigma * pow(T,0.5) * distribution(generator));
-        payoff = std::max(K-S_T,0.0);
-        total_payoff = total_payoff + payoff;
-    }
+//     for (int i = 0; i < n_sims; i++){
+//         S_T = ES_T * exp(sigma * pow(T,0.5) * distribution(generator));
+//         payoff = std::max(K-S_T,0.0);
+//         total_payoff = total_payoff + payoff;
+//     }
 
-    return total_payoff/static_cast<double>(n_sims) * exp(-r * T);
-}
+//     return total_payoff/static_cast<double>(n_sims) * exp(-r * T);
+// }
 
 int main(){
     int n_sims = pow(10,5);
