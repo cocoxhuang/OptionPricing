@@ -5,12 +5,13 @@ using namespace std;
 
 int main(){
     binModel model;
-    int T;
-    double K;
+    callEruoOption call;
+    putEruoOption put;
 
     model.getParams();
-    getOptionParams(T,K);
-    cout << "Call price:    " << priceBinomial(model, T, K, callPayoff) << endl;
-    cout << "Put price:     " << priceBinomial(model, T, K, putPayoff)  << endl;
+    call.getOptionParams();
+    put.getOptionParams();
+    cout << "Call price:    " << call.priceBinomial(model,call.getK()) << endl;
+    cout << "Put price:     " << put.priceBinomial(model,call.getK())  << endl;
     return 0;
 }

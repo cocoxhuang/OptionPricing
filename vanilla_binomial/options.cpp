@@ -15,14 +15,18 @@ int nChoosek(const int& n, const int& k){
     return res;
 }
 
-// get the parameters of the option
-void getOptionParams(int& T, double& K){
-    cout << "Time to maturity: "; cin >> T;
-    cout << "Strike price: "; cin >> K;
+// calculate payoff of call 
+double callPayoff(const double& S, const double& K){
+    return max(S-K,0.0);
+}
+
+// calculate payoff of put
+double putPayoff(const double& S, const double& K){
+    return max(K-S,0.0);
 }
 
 // calculate eurupean option price with lattice model
-double priceBinomial(binModel model, const int& T, const double& K, double (*payoff)(const double& S, const double& K)){
+double EuroOption::priceBinomial(binModel model, const double& K){
     double q = model.riskNeutralProb();
     double price = 0;
     for (int i = 0; i <= T; i++){
@@ -32,12 +36,18 @@ double priceBinomial(binModel model, const int& T, const double& K, double (*pay
     return price;
 }
 
-// calculate payoff of call 
-double callPayoff(const double& S, const double& K){
-    return max(S-K,0.0);
+// get params for call option
+void callEruoOption::getOptionParams(){
+    int T;
+    cout << "Time to maturity: "; cin >> T;
+    setT(T);
+    cout << "Call strike price: "; cin >> K;
 }
 
-// calculate payoff of put
-double putPayoff(const double& S, const double& K){
-    return max(K-S,0.0);
+// get params for put option
+void putEruoOption::getOptionParams(){
+    int T;
+    cout << "Time to maturity: "; cin >> T;
+    setT(T);
+    cout << "Put strike price: "; cin >> K;
 }
