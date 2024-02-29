@@ -1,40 +1,41 @@
 #ifndef options_h
 #define options_h
 
+#include <iostream>
+#include <algorithm>    // max()
 #include "binModel.h"
+
+using namespace std;
 
 class EuroOption{
     private: 
-        int T;                                                         // time to maturity
-        double (*payoff)(const double& S, const double& K);            // payoff function
+        int T;                                        // time to maturity
     public:
         void setT(const int& T_){T = T_;}
-        void setPayoff(double (*payoff_)(const double& S, const double& K)){payoff = payoff_;}
-        double priceBinomial(binModel model, const double& K);
+        virtual double Payoff(const double& S){return 0;}
+        double priceBinomial(binModel model);
 };
 // calculate factorial
 int nChoosek(const int& n, const int& k);
 
 // call option class
-double callPayoff(const double& S, const double& K);
-class callEruoOption: public EuroOption{
+class callEuroOption: public EuroOption{
     private:
         double K;      // stirke price
     public:
-        callEruoOption(){setPayoff(callPayoff);}
-        double getK(){return K;}
+        void setK(const double& K_){K = K_;}
         void getOptionParams();
+        double Payoff(const double& S){return max(S-K,0.0);}
 };
 
 // put option class
-double putPayoff(const double& S, const double& K);
-class putEruoOption: public EuroOption{
+class putEuroOption: public EuroOption{
     private:
         double K;       // stirke price
     public:
-        putEruoOption(){setPayoff(putPayoff);}
-        double getK(){return K;}
+        void setK(const double& K_){K = K_;}
         void getOptionParams();
+        double Payoff(const double& S){return max(K-S,0.0);}
 };
 
 #endif
